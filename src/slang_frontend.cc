@@ -1208,6 +1208,11 @@ public:
 		}
 	}
 
+	void handle(const ast::TimedStatement &stmt)
+	{
+		stmt.stmt.visit(*this);
+	}
+
 	void handle(const ast::Statement &stmt)
 	{
 		unimplemented(stmt);

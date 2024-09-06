@@ -684,6 +684,12 @@ ER EvalVisitor::visit(const ImmediateAssertionStatement &stmt)
 	return ER::Success;
 }
 
+ER EvalVisitor::visit(const TimedStatement &stmt)
+{
+	ER result = stmt.stmt.visit(*this);
+	return result;
+}
+
 ER EvalVisitor::visit(const EmptyStatement&)
 {
 	return ER::Success;
