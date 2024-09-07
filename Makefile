@@ -51,11 +51,14 @@ clean: clean-objects
 
 clean-all: clean clean-slang
 
+all: build/slang.so
+	cp build/slang.so ${HOME}/.local/share/yosys/plugins
+
 -include $(OBJS:.o=.d)
 build/%.o: src/%.cc build/slang_install/.built
 	@mkdir -p $(@D)
 	@echo "    CXX $@"
-	@$(YOSYS_CONFIG) --exec --cxx --cxxflags -O3 -g -I . -MD \
+	@$(YOSYS_CONFIG) --exec --cxx --cxxflags -O0 -g3 -I . -MD \
 		 -c -o $@ $< -std=c++20 \
 		 -DSLANG_BOOST_SINGLE_HEADER \
 		 -Ibuild/slang_install/include
@@ -63,7 +66,7 @@ build/%.o: src/%.cc build/slang_install/.built
 build/slang.so: $(OBJS)
 	@mkdir -p $(@D)
 	@echo "   LINK $@"
-	@$(YOSYS_CONFIG) --exec --cxx --cxxflags --ldflags -g -o $@ \
+	@$(YOSYS_CONFIG) --exec --cxx --cxxflags --ldflags -g3 -o $@ \
 		-shared $^ --ldlibs \
 		-Lbuild/slang_install/lib \
 		-lsvlang -lfmt
